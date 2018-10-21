@@ -1,7 +1,7 @@
 # Bring YAML to Nagios (r) configuration
 > Convert configuration written in YAML into Nagios objects definition.
 
-[![Build Status](https://travis-ci.org/BorisBabiy/nagios-yaml.svg?branch=master)](https://travis-ci.org/BorisBabiy/nagios-yaml)
+[![Build Status](https://travis-ci.org/angelus169/nagios-yaml.svg?branch=master)](https://travis-ci.org/angelus169/nagios-yaml)
 
 ## Installation
 
@@ -21,7 +21,7 @@
 
 ## Meta
 
-Borys Babii – [@babiyboris](https://twitter.com/babiyboris) – boris.babiy@mev.com
+Borys Babii – [@babiyboris](https://twitter.com/babiyboris) – angelus169@gmail.com
 
 Distributed under the Apache license 2.0 license. See ``LICENSE`` for more information.
 
@@ -35,6 +35,6 @@ Distributed under the Apache license 2.0 license. See ``LICENSE`` for more infor
 4. Push to the branch (`git push origin feature/fooBar`)
 5. Create a new Pull Request
 
-[travis-image]: https://img.shields.io/travis/BorisBabiy/nagios-yaml/master.svg?style=flat-square
-[travis-url]: https://travis-ci.org/BorisBabiy/nagios-yaml
-[wiki]: https://github.com/BorisBabiy/nagios-yaml/wiki
+[travis-image]: https://img.shields.io/travis/angelus169/nagios-yaml/master.svg?style=flat-square
+[travis-url]: https://travis-ci.org/angelus169/nagios-yaml
+[wiki]: https://github.com/angelus169/nagios-yaml/wiki
