@@ -6,10 +6,10 @@ services:
   - docker
 
 script:
-  - docker build -t borisbabiy/nagios-yaml .
+  - docker build -t angelus169/nagios-yaml .
 
 after_success:
   - if [[ "$TRAVIS_BRANCH" == "master" ]]; then
-      docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD ;
-      docker push borisbabiy/nagios-yaml
+      docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}" ;
+      docker push angelus169/nagios-yaml:latest;
     fi

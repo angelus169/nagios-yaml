@@ -25,7 +25,7 @@ Borys Babii – [@babiyboris](https://twitter.com/babiyboris) – angelus169@gma
 
 Distributed under the Apache license 2.0 license. See ``LICENSE`` for more information.
 
-[https://github.com/BorisBabiy](https://github.com/BorisBabiy/)
+[https://github.com/angelus169](https://github.com/angelus169/)
 
 ## Contributing
 
