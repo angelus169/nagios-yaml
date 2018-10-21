@@ -1,0 +1,11 @@
+#
+# '{{ object_name }}' host group definition
+define hostgroup {
+{% for key, value in objects[object_name].iteritems() %}
+{% if (value is not string) and (value is not number) %}
+    {{ key }}   {{ value|join(", ") }}
+{% else %}
+    {{ key }}   {{ value }}
+{% endif %}
+{% endfor %}
+    }

@@ -1,0 +1,11 @@
+#
+# '{{ object_name }}' time period definition
+define timeperiod {
+{% for key, value in objects[object_name].iteritems() %}
+{% if (value is not string) and (value is not number) %}
+    {{ key }}   {{ value|join(", ") }}
+{% else %}
+    {{ key }}   {{ value }}
+{% endif %}
+{% endfor %}
+    }

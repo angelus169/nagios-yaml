@@ -1,0 +1,14 @@
+version: '4'
+objects:
+    hosts:
+    hostgroups:
+    services:
+    servicegroups:
+    contacts:
+    contactgroups:
+    timeperiods:
+    commands:
+    servicedependencies:
+    serviceescalations:
+    hostdependencies:
+    hostescalations:

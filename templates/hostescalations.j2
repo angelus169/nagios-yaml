@@ -1,0 +1,5 @@
+{% if objects is not none %}
+{% for object_name, object_configuration in objects.iteritems() %}
+{% include "objects_definition/hostescalation.j2" %}
+{% endfor %}
+{% endif %}
