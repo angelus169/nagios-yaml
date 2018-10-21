@@ -6,7 +6,7 @@ services:
   - docker
 
 script:
-  - docker build -t borisbabiy/nagios-yaml .
+  - docker build -t borisbabiy/nagios-yaml:latest -t borisbabiy/nagios-yaml:$(cat version.txt) .
 
 deploy:
   provider: script
