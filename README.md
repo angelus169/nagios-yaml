@@ -1,6 +1,8 @@
 # Bring YAML to Nagios (r) configuration
 > Convert configuration written in YAML into Nagios objects definition.
 
+[![Build Status](https://travis-ci.org/BorisBabiy/nagios-yaml.svg?branch=master)](https://travis-ci.org/BorisBabiy/nagios-yaml)
+
 ## Installation
 
 
