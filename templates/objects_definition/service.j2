@@ -3,9 +3,9 @@
 define service {
 {% for key, value in objects[object_name].iteritems() %}
 {% if (value is not string) and (value is not number) %}
-    {{ key }}   {{ value|join(", ") }}
+    {{ key.rjust(30) }}   {{ value|join(", ") }}
 {% else %}
-    {{ key }}   {{ value }}
+    {{ key.rjust(30) }}   {{ value }}
 {% endif %}
 {% endfor %}
     }

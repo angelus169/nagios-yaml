@@ -1,0 +1,423 @@
+version: '4'
+objects:
+    hosts:
+        generic-host:
+            name: "generic-host"
+            notifications_enabled: 1
+            event_handler_enabled: 1
+            flap_detection_enabled: 1
+            process_perf_data: 1
+            retain_status_information: 1
+            retain_nonstatus_information: 1
+            notification_period: 1
+            register: 0
+        linux-server:
+            name: "linux-server"
+            use: "generic-host"
+            check_period: "24x7"
+            check_interval: 5
+            retry_interval: 1
+            max_check_attempts: 10
+            check_command: "check-host-alive"
+            notification_period: "workhours"
+            notification_interval: 120
+            notification_options:
+                - d
+                - u
+                - r
+            contact_groups:
+                - admins
+            register: 0
+        windows-server:
+            name: "windows-server"
+            use: "generic-host"
+            check_period: "24x7"
+            check_interval: 5
+            retry_interval: 1
+            max_check_attempts: 10
+            check_command: "check-host-alive"
+            notification_period: "24x7"
+            notification_interval: 30
+            notification_options:
+                - d
+                - r
+            contact_groups:
+                - admins
+            hostgroups:
+                - windows-servers
+            register: 0
+        generic-printer:
+            name: "generic-printer"
+            use: "generic-host"
+            check_period: "24x7"
+            check_interval: 5
+            retry_interval: 1
+            max_check_attempts: 10
+            check_command: "check-host-alive"
+            notification_period: "workhours"
+            notification_interval: 30
+            notification_options:
+                - d
+                - r
+            contact_groups:
+                - admins
+            register: 0
+        generic-switch:
+            name: "generic-switch"
+            use: "generic-host"
+            check_period: "24x7"
+            check_interval: 5
+            retry_interval: 1
+            max_check_attempts: 10
+            check_command: "check-host-alive"
+            notification_period: "24x7"
+            notification_interval: 30
+            notification_options:
+                - d
+                - r
+            contact_groups:
+                - admins
+            register: 0
+        localhost:
+            use: "linux-server"
+            host_name: "localhost"
+            alias: "localhost"
+            address: "127.0.0.1"
+        hplj2605dn:
+            use: "generic-printer"
+            host_name: "hplj2605dn"
+            alias: "HP LaserJet 2605dn"
+            address: "192.168.1.30"
+            hostgroups:
+                - network-printers
+        linksys-srw224p:
+            use: "generic-switch"
+            host_name: "linksys-srw224p"
+            alias: "Linksys SRW224P Switch"
+            address: "192.168.1.253"
+            hostgroups:
+                - switches
+        winserver:
+            use: "windows-servers"
+            host_name: "winserver"
+            alias: "My Windows Server"
+            address: "192.168.1.2"
+    hostgroups:
+        linux-servers:
+            hostgroup_name: "linux-servers"
+            alias: "Linux Servers"
+            members: "localhost"
+        windows-servers:
+            hostgroup_name: "windows-servers"
+            alias: "Windows Servers"
+        network-printers:
+            hostgroup_name: "network-printers"
+            alias: "Network Printers"
+        switches:
+            hostgroup_name: "switches"
+            alias: "Network Switches"
+    services:
+        generic-service:
+            name: "generic-service"
+            active_checks_enabled: 1
+            passive_checks_enabled: 1
+            parallelize_check: 1
+            obsess_over_service: 1
+            check_freshness: 0
+            notifications_enabled: 1
+            event_handler_enabled: 1
+            flap_detection_enabled: 1
+            process_perf_data: 1
+            retain_status_information: 1
+            retain_nonstatus_information: 1
+            is_volatile: 0
+            check_period: "24x7"
+            max_check_attempts: 3
+            check_interval: 10
+            retry_interval: 2
+            contact_groups:
+                - admins
+            notification_options:
+                - w
+                - u
+                - c
+                - r
+            notification_interval: 60
+            notification_period: "24x7"
+            register: 0
+        local-service:
+            name: "local-service"
+            use: "generic-service"
+            max_check_attempts: 4
+            check_interval: 5
+            retry_interval: 1
+            register: 0
+        ping:
+            use: "local-service"
+            host_name: "localhost"
+            service_description: "PING"
+            check_command: "check_ping!100.0,20%!500.0,60%"
+        root_partition:
+            use: "local-service"
+            host_name: "localhost"
+            service_description: "Root Partition"
+            check_command: "check_local_disk!20%!10%!/"
+        current_users:
+            use: "local-service"
+            host_name: "localhost"
+            service_description: "Current Users"
+            check_command: "check_local_users!20!50"
+        total_processes:
+            use: "local-service"
+            host_name: "localhost"
+            service_description: "Total Processes"
+            check_commmand: "check_local_procs!250!400!RSZDT"
+        current_load:
+            use: "local-service"
+            host_name: "localhost"
+            service_description: "Current Load"
+            check_command: "check_local_load!5.0,4.0,3.0!10.0,6.0,4.0"
+        swap_usage:
+            use: "local-service"
+            host_name: "localhost"
+            service_description: "Swap Usage"
+            check_command: "check_local_swap!20%!10%"
+        ssh:
+            use: "local-service"
+            host_name: "localhost"
+            service_description: "SSH"
+            check_command: "check_ssh"
+            notifications_enabled: 0
+        http:
+            use: "local-service"
+            host_name: "localhost"
+            service_description: "HTTP"
+            check_command: "check_http"
+            notifications_enabled: 0
+        printer_status:
+            use: "generic-service"
+            host_name: "hplj2605dn"
+            service_description: "Printer Status"
+            check_command: "check_hpjd!-C public"
+            check_interval: 10
+            retry_interval: 1
+        printer_ping:
+            use: "generic-service"
+            host_name: "hplj2605dn"
+            service_description: "PING"
+            check_command: "check_ping!3000.0,80%!5000.0,100%"
+            check_interval: 10
+            retry_interval: 1
+        switch_ping:
+            use: "generic-service"
+            host_name: "linksys-srw224p"
+            service_description: "PING"
+            check_command: "check_ping!200.0,20%!600.0,60%"
+            check_interval: 5
+            retry_interval: 1
+        switch_uptime:
+            use: "generic-service"
+            host_name: "linksys-srw224p"
+            service_description: "Uptime"
+            check_command: "check_snmp!-C public -o sysUpTime.0"
+        port_1_link_status:
+            use: "generic-service"
+            host_name: "linksys-srw224p"
+            service_description: "Port 1 Link Status"
+            check_command: "check_snmp!-C public -o ifOperStatus.1 -r 1 -m RFC1213-MIB"
+        port_1_bandwidth_usage:
+            use: "generic-service"
+            host_name: "linksys-srw224p"
+            service_description: "Port 1 Bandwidth Usage"
+            check_command: "check_local_mrtgtraf!/var/lib/mrtg/192.168.1.253_1.log!AVG!1000000,1000000!5000000,5000000!10"
+        nsclient_version:
+            use: "generic-service"
+            host_name: "winserver"
+            service_description: "NSClient++ Version"
+            check_command: "check_nt!CLIENTVERSION"
+        windows_uptime:
+            use: "generic-service"
+            host_name: "winserver"
+            service_description: "Uptime"
+            check_command: "check_nt!UPTIME"
+        cpu_load:
+            use: "generic-service"
+            host_name: "winserver"
+            service_description: "CPU Load"
+            check_command: "check_nt!CPULOAD!-l 5,80,90"
+        memory_usage:
+            use: "generic-service"
+            host_name: "winserver"
+            service_description: "Memory Usage"
+            check_command: "check_nt!MEMUSE!-w 80 -c 90"
+        drive_space:
+            use: "generic-service"
+            host_name: "winserver"
+            service_description: "C:\ Drive Space"
+            check_command: "check_nt!USEDDISKSPACE!-l c -w 80 -c 90"
+        w3svc:
+            use: "generic-service"
+            host_name: "winserver"
+            service_description: "W3SVC"
+            check_command: "check_nt!SERVICESTATE!-d SHOWALL -l W3SVC"
+        explorer:
+            use: "generic-service"
+            host_name: "winserver"
+            service_description: "Explorer"
+            check_command: "check_nt!PROCSTATE!-d SHOWALL -l Explorer.exe"
+    servicegroups:
+    contacts:
+        generic-contact:
+            name: "generic-contact"
+            service_notification_period: "24x7"
+            host_notification_period: "24x7"
+            service_notification_options:
+                - "w"
+                - "u"
+                - "c"
+                - "r"
+                - "f"
+                - "s"
+            host_notification_options:
+                - "d"
+                - "u"
+                - "r"
+                - "f"
+                - "s"
+            service_notification_commands: "notify-service-by-email"
+            host_notification_commands: "notify-host-by-email"
+            register: 0
+        nagiosadmin:
+            contact_name: "nagiosadmin"
+            use: "generic-contact"
+            alias: "Nagios Admin"
+            email: "nagios@localhost"
+    contactgroups:
+        admins:
+            contactgroup_name: "admins"
+            alias: "Nagios Administrators"
+            members: "nagiosadmin"
+    timeperiods:
+        24x7:
+            name: "24x7"
+            timeperiod_name: "24x7"
+            alias: "24 Hours A Day, 7 Days A Week"
+            sunday: "00:00-24:00"
+            monday: "00:00-24:00"
+            tuesday: "00:00-24:00"
+            wednesday: "00:00-24:00"
+            thursday: "00:00-24:00"
+            friday: "00:00-24:00"
+            saturday: "00:00-24:00"
+        workhours:
+            name: "workhours"
+            timeperiod_name: "timeperiod_name"
+            alias: "Normal Work Hours"
+            monday: "09:00-17:00"
+            tuesday: "09:00-17:00"
+            wednesday: "09:00-17:00"
+            thursday: "09:00-17:00"
+            friday: "09:00-17:00"
+        none:
+            name: "none"
+            timeperiod_name: "none"
+            alias: "No Time Is A Good Time"
+        us-holidays:
+            name: "us-holidays"
+            timeperiod_name: "us-holidays"
+            alias: "U.S. Holidays"
+            january 1: "00:00-00:00"
+            monday -1 may: "00:00-00:00"
+            july 4: "00:00-00:00"
+            monday 1 september: "00:00-00:00"
+            thursday 4 november: "00:00-00:00"
+            december 25: "00:00-00:00"
+        24x7_sans_holidays:
+            name: "24x7_sans_holidays"
+            timeperiod_name: "24x7_sans_holidays"
+            alias: "24x7 Sans Holidays"
+            use: "us-holidays"
+            sunday: "00:00-24:00"
+            monday: "00:00-24:00"
+            tuesday: "00:00-24:00"
+            wednesday: "00:00-24:00"
+            thursday: "00:00-24:00"
+            friday: "00:00-24:00"
+            saturday: "00:00-24:00"
+    commands:
+        notify-host-by-email:
+            command_name: "notify-host-by-email"
+            command_line: '/usr/bin/printf "%b" "***** Nagios *****\n\nNotification Type: $NOTIFICATIONTYPE$\nHost: $HOSTNAME$\nState: $HOSTSTATE$\nAddress: $HOSTADDRESS$\nInfo: $HOSTOUTPUT$\n\nDate/Time: $LONGDATETIME$\n" | /bin/mail -s \"** $NOTIFICATIONTYPE$ Host Alert: $HOSTNAME$ is $HOSTSTATE$ **" $CONTACTEMAIL$'
+        notify-service-by-email:
+            command_name: "notify-service-by-email"
+            command_line: '/usr/bin/printf "%b" "***** Nagios *****\n\nNotification Type: $NOTIFICATIONTYPE$\n\nService: $SERVICEDESC$\nHost: $HOSTALIAS$\nAddress: $HOSTADDRESS$\nState: $SERVICESTATE$\n\nDate/Time: $LONGDATETIME$\n\nAdditional Info:\n\n$SERVICEOUTPUT$\n" | /bin/mail -s "** $NOTIFICATIONTYPE$ Service Alert: $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$ **" $CONTACTEMAIL$'
+        check-host-alive:
+            command_name: "check-host-alive"
+            command_line: "$USER1$/check_ping -H $HOSTADDRESS$ -w 3000.0,80% -c 5000.0,100% -p 5"
+        check_local_disk:
+            command_name: "check_local_disk"
+            command_line: "$USER1$/check_disk -w $ARG1$ -c $ARG2$ -p $ARG3$"
+        check_local_load:
+            command_name: "check_local_load"
+            command_line: "$USER1$/check_load -w $ARG1$ -c $ARG2$"
+        check_local_procs:
+            command_name: "check_local_procs"
+            command_line: "$USER1$/check_procs -w $ARG1$ -c $ARG2$ -s $ARG3$"
+        check_local_users:
+            command_name: "check_local_users"
+            command_line: "$USER1$/check_users -w $ARG1$ -c $ARG2$"
+        check_local_swap:
+            command_name: "check_local_swap"
+            command_line: "$USER1$/check_swap -w $ARG1$ -c $ARG2$"
+        check_local_mrtgtraf:
+            command_name: "check_local_mrtgtraf"
+            command_line: "$USER1$/check_mrtgtraf -F $ARG1$ -a $ARG2$ -w $ARG3$ -c $ARG4$ -e $ARG5$"
+        check_ftp:
+            command_name: "check_ftp"
+            command_line: "$USER1$/check_ftp -H $HOSTADDRESS$ $ARG1$"
+        check_hpjd:
+            command_name: "check_hpjd"
+            command_line: "$USER1$/check_hpjd -H $HOSTADDRESS$ $ARG1$"
+        check_snmp:
+            command_name: "check_snmp"
+            command_line: "$USER1$/check_snmp -H $HOSTADDRESS$ $ARG1$"
+        check_http:
+            command_name: "check_http"
+            command_line: "$USER1$/check_http -I $HOSTADDRESS$ $ARG1$"
+        check_ssh:
+            command_name: "check_ssh"
+            command_line: "$USER1$/check_ssh $ARG1$ $HOSTADDRESS$"
+        check_dhcp:
+            command_name: "check_dhcp"
+            command_line: "$USER1$/check_dhcp $ARG1$"
+        check_ping:
+            command_name: "check_ping"
+            command_line: "$USER1$/check_ping -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ -p 5"
+        check_pop:
+            command_name: "check_pop"
+            command_line: "$USER1$/check_pop -H $HOSTADDRESS$ $ARG1$"
+        check_imap:
+            command_name: "check_imap"
+            command_line: "$USER1$/check_imap -H $HOSTADDRESS$ $ARG1$"
+        check_smtp:
+            command_name: "check_smtp"
+            command_line: "$USER1$/check_smtp -H $HOSTADDRESS$ $ARG1$"
+        check_tcp:
+            command_name: "check_tcp"
+            command_line: "$USER1$/check_tcp -H $HOSTADDRESS$ -p $ARG1$ $ARG2$"
+        check_udp:
+            command_name: "check_udp"
+            command_line: "$USER1$/check_udp -H $HOSTADDRESS$ -p $ARG1$ $ARG2$"
+        check_nt:
+            command_name: "check_nt"
+            command_line: "$USER1$/check_nt -H $HOSTADDRESS$ -p 12489 -v $ARG1$ $ARG2$"
+        process-host-perfdata:
+            command_name: "process-host-perfdata"
+            command_line: '/usr/bin/printf "%b" "$LASTHOSTCHECK$\t$HOSTNAME$\t$HOSTSTATE$\t$HOSTATTEMPT$\t$HOSTSTATETYPE$\t$HOSTEXECUTIONTIME$\t$HOSTOUTPUT$\t$HOSTPERFDATA$\n" >> /usr/local/nagios/var/host-perfdata.out'
+        process-service-perfdata:
+            command_name: "process-service-perfdata"
+            command_line: '/usr/bin/printf "%b" "$LASTSERVICECHECK$\t$HOSTNAME$\t$SERVICEDESC$\t$SERVICESTATE$\t$SERVICEATTEMPT$\t$SERVICESTATETYPE$\t$SERVICEEXECUTIONTIME$\t$SERVICELATENCY$\t$SERVICEOUTPUT$\t$SERVICEPERFDATA$\n" >> /usr/local/nagios/var/service-perfdata.out'
+    servicedependencies:
+    serviceescalations:
+    hostdependencies:
+    hostescalations:
