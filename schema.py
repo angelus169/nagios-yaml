@@ -8,62 +8,62 @@
         'type': 'dict',
         'schema': {
             'hosts': {
-                'required': True,
+                'required': False,
                 'type': 'dict',
                 'schema': {}
             },
             'hostgroups': {
-                'required': True,
+                'required': False,
                 'type': 'dict',
                 'schema': {}
             },
             'services': {
-                'required': True,
+                'required': False,
                 'type': 'dict',
                 'schema': {}
             },
             'servicegroups': {
-                'required': True,
+                'required': False,
                 'type': 'dict',
                 'schema': {}
             },
             'contacts': {
-                'required': True,
+                'required': False,
                 'type': 'dict',
                 'schema': {}
             },
             'contactgroups': {
-                'required': True,
+                'required': False,
                 'type': 'dict',
                 'schema': {}
             },
             'timeperiods': {
-                'required': True,
+                'required': False,
                 'type': 'dict',
                 'schema': {}
             },
             'commands': {
-                'required': True,
+                'required': False,
                 'type': 'dict',
                 'schema': {}
             },
             'servicedependencies': {
-                'required': True,
+                'required': False,
                 'type': 'dict',
                 'schema': {}
             },
             'serviceescalations': {
-                'required': True,
+                'required': False,
                 'type': 'dict',
                 'schema': {}
             },
             'hostdependencies': {
-                'required': True,
+                'required': False,
                 'type': 'dict',
                 'schema': {}
             },
             'hostescalations': {
-                'required': True,
+                'required': False,
                 'type': 'dict',
                 'schema': {}
             }
