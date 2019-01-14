@@ -15,7 +15,7 @@ def main(arguments):
                         type=argparse.FileType('w'))
 
     args = parser.parse_args(arguments)
-    yaml_content = yaml.load(args.input)
+    yaml_content = yaml.safe_load(args.input)
     objects_definition = yaml_content['objects']
     loader = FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates'))
     environment = Environment(loader=loader, trim_blocks=True, keep_trailing_newline=True)
